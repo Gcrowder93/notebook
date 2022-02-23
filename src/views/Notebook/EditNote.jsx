@@ -9,6 +9,7 @@ export default function EditNote() {
   const { notes, getNote, updateNote } = useNotes();
   const [note, setNote] = useState({});
   const [message, setMessage] = useState('');
+  const { user, useUser } = auth;
 
   useEffect(() => {
     if (!notes.loading) setNote(getNote(id));
