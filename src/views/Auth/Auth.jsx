@@ -4,15 +4,25 @@ import { Link } from 'react-router-dom';
 import UserForm from '../../components/UserForm/UserForm';
 import { useUser } from '../../context/UserContext';
 import { signInUser, signUpUser } from '../../services/users';
-
+import { useForm } from '../../hooks/useForm';
 import styles from './Auth.css';
 
 export default function Auth({ isSigningUp = false }) {
   const history = useHistory();
   const { setUser } = useUser();
+  const { formState, handleFormChange } = useForm({ email: '', password: '' });
+  const { from } = location.state || { from: { pathname: '/' } };
 
   const handleSubmit = async (email, password) => {
     try {
+      if (isSigningUp) {
+        await signUpUser(email, password);
+        history.push(`/confirm-email`);
+      } else {
+        const response = await signInUser(email, password);
+        setUser({ id: response.id, email: response.email });
+        history.replace(`/notes`);
+      }
       // TODO: Implement sign up & sign
       // Use isSigningUp to determine whether to sign up or sign in a user
       // If signing in: set the user ({id, email}) and redirect to /notes

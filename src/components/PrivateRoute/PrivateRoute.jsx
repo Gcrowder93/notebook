@@ -12,7 +12,7 @@ export default function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        user.user ? (
+        user.email ? (
           children
         ) : (
           <Redirect
